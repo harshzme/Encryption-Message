@@ -1,0 +1,80 @@
+*{
+	margin: 0px;
+}
+.head{
+	background-color: #DAD4B5;
+	height: 4rem;
+	font-weight: bold;
+	font-size: 2.1rem;
+	padding-top: 1.2rem;
+}
+.images{
+	margin-top: 2rem;
+}
+.plainText{
+	margin-left: 3rem;
+	height: 17rem;
+	float: left;
+}
+.arrow{
+	height: 7rem;
+	rotate: 270deg;
+	margin-left: 6rem;
+	float: left;
+	margin-top: 4rem;
+}
+.encrypted{
+	margin-left: 4rem;
+	float: left;
+	height: 20rem;
+}
+.magic{
+	float: left;
+	margin-left: 5rem;
+	margin-top: 2.4rem;
+	height: 10rem;
+}
+.buttons{
+	float: left;
+	/* border: 1px solid black; */
+	margin-left: 42%;
+	padding: 2rem;
+	width: 12rem;
+	box-shadow: 0px 0px 15px 0px #DAD4B5;	
+}
+.aes, .des{
+	height: 2.5rem;
+	width: 12rem;
+	border: none;
+	border-radius: 2rem;
+	background-color: #DAD4B5;
+	text-decoration: none;
+}
+.des{
+	margin-top: 2rem;
+}
+.aes:hover, .des:hover{
+	cursor: pointer;
+}
+.footer{
+	background-color: rgb(243, 243, 243);
+	height: 4rem;
+	width: 100%;
+	float: left;
+	margin-top: 6rem;
+	height: 10rem;
+	font-size: 1.5rem;
+}
+.footer center{
+	margin-top: 1rem;
+}
+.team .first{
+	margin-left: 20rem;
+}
+.team li{
+	margin-top: 3rem;
+	float: left;
+	list-style: none;
+	margin-right: 5rem;
+	font-size: 1rem;
+}

@@ -1,0 +1,43 @@
+.card{
+  border-radius: 8px;
+  height: 37rem;
+  width: 94%;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  box-shadow: 0px 0px 20px 0px #DAD4B5;
+}
+button{
+  height: 2.5rem;
+  width: 6rem;
+  border: none;
+  background-color: #DAD4B5;
+  border-radius: 2px;
+}
+button:hover{
+  cursor: pointer;
+}
+#textInput{
+  width: 28rem;
+  margin-top: 6rem;
+  margin-left: 5rem;
+}
+#output{
+  margin-left: 5rem;
+  font-size: 1.3rem;
+}
+#encryptionKey{
+  margin-left: 5rem;
+  margin-top: 1rem;
+}
+.textInput button{
+  margin-left: 3rem;
+  margin-top: 2rem;
+}
+.fileIp{
+  margin-left: 60%;
+  margin-top: -15rem;
+}
+p{
+  font-size: 1.5rem;
+  margin-left: 5rem;
+}

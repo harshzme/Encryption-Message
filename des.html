@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DES File Encryption and Decryption</title>
+    <script src="sjcl.js"></script>
+    <link rel="stylesheet" href="des.css">
+    <script src="https://crypto.stanford.edu/sjcl/sjcl.js"></script>
+</head>
+<body>
+    <center><h1>DES File Encryption and Decryption</h1></center>
+    <div class="card">
+        <div class="textInput">
+            <textarea id="textInput" rows="5" cols="50" placeholder="Enter your text here..."></textarea><br>
+            <input type="text" id="encryptionKey" placeholder="Enter the encryption key..." /><br>
+            <button onclick="encryptText()">Encrypt</button>
+            <button onclick="decryptText()">Decrypt</button><br>
+            <p>Result</p>
+            <div id="output"></div>
+        </div>
+        <div class="fileIp">
+            <input type="file" id="fileInput" accept=".txt" />
+            <button onclick="encryptFile()">Encrypt File</button>
+            <button onclick="decryptFile()">Decrypt File</button><br>
+            <a id="downloadLink" style="display: none;" download="decrypted.txt">Download Decrypted File</a>
+        </div>
+    </div>
+</body>
+<script>
+    function encryptFile() {
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const fileContent = event.target.result;
+                const encryptedData = sjcl.encrypt("YOUR_ENCRYPTION_KEY", fileContent);
+                saveFile(encryptedData, "encrypted.txt");
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    function decryptFile() {
+        const fileInput = document.getElementById("fileInput");
+        const file = fileInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const fileContent = event.target.result;
+                try {
+                    const decryptedData = sjcl.decrypt("YOUR_ENCRYPTION_KEY", fileContent);
+                    saveFile(decryptedData, "decrypted.txt");
+                } catch (error) {
+                    alert("Decryption failed. Please make sure you provide the correct encryption key.");
+                }
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    function saveFile(data, fileName) {
+        const blob = new Blob([data], { type: "text/plain" });
+        const url = window.URL.createObjectURL(blob);
+        const downloadLink = document.getElementById("downloadLink");
+        downloadLink.href = url;
+        downloadLink.style.display = "block";
+        downloadLink.download = fileName;
+    }
+    function encryptText() {
+        const textInput = document.getElementById("textInput").value;
+        const encryptionKey = document.getElementById("encryptionKey").value;
+
+        if (textInput && encryptionKey) {
+            const encryptedText = sjcl.encrypt(encryptionKey, textInput);
+            document.getElementById("output").innerText = `Encrypted Text: ${encryptedText}`;
+        } else {
+            alert("Please enter text and an encryption key.");
+        }
+    }
+
+    function decryptText() {
+        const encryptedText = document.getElementById("output").innerText;
+
+        if (encryptedText) {
+            const encryptionKey = document.getElementById("encryptionKey").value;
+            try {
+                const decryptedText = sjcl.decrypt(encryptionKey, encryptedText.split("Encrypted Text: ")[1]);
+                document.getElementById("output").innerText = `Decrypted Text: ${decryptedText}`;
+            } catch (error) {
+                alert("Decryption failed. Please make sure you provide the correct encryption key.");
+            }
+        } else {
+            alert("No encrypted text to decrypt.");
+        }
+    }
+</script>
+</html>

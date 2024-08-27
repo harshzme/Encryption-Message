@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" type="text/css" href="aes.css">
+   <title>AES Program</title>
+</head>
+<body>
+   <div class="card">
+      <div class="textIp">
+         <!-- text input -->
+         <span class="text">Data to encrypt:</span>
+         <input id="textBar" type="text" placeholder="Enter text to encrypt"><br><br>
+         <button id="encrypt-button" onclick="encrypt()">Encrypt</button><br><br>
+         
+         <!-- Output -->
+         <span class="text">Encrypted Text: </span>
+         <textarea id="encryptedText"></textarea><br><br>
+         <button id="decrypt-button" onclick="decrypt()">Decrypt</button><br><br>
+         <span class="text">Decrypted Text: </span>
+         <textarea id="decryptedText"></textarea>
+      </div>
+      <div class="fileIp">
+         <!-- File input -->
+         <input type="file" id="fileInput" />
+         <button type="button" id="encryptButton">Encrypt</button>
+         <button type="button" id="decryptButton">Decrypt</button>
+
+         <div class="text">Encrypted File</div>
+         <textarea id="encryptedFile"> </textarea>
+         <div class="text">Decrypted File</div>
+         <div id="decryptedFile"></div>
+      </div>
+   </div>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+   <script>
+   function encrypt() {
+     const pass = prompt ('Enter your password');
+        var encrypted = CryptoJS.AES.encrypt(
+           document.getElementById("textBar").value,
+           pass
+        );
+        document.getElementById("encryptedText").innerHTML = encrypted;
+        document.getElementById("decryptedText").innerHTML = "";
+     }
+     function decrypt() {
+     const pass = prompt ('Enter your password');
+        try{
+           var decrypted = CryptoJS.AES.decrypt(
+              document.getElementById("encryptedText").innerHTML,
+              pass
+           ).toString(CryptoJS.enc.Utf8);
+           document.getElementById("decryptedText").innerHTML = decrypted;
+           document.getElementById("encryptedText").innerHTML = "";
+           if (document.getElementById("decryptedText").innerHTML == ''){
+              alert('Decryption failed. Check your password.');
+           }
+        }
+        catch(err){
+           alert('Decryption failed. Check your password.');
+        }
+     }
+   // Get the file input element
+   const fileInput = document.getElementById('fileInput');
+
+   // Get the encrypt and decrypt buttons
+   const encryptButton = document.getElementById('encryptButton');
+   const decryptButton = document.getElementById('decryptButton');
+
+   // Get the encrypted and decrypted file divs
+   const encryptedFileDiv = document.getElementById('encryptedFile');
+   const decryptedFileDiv = document.getElementById('decryptedFile');
+
+   // Create a function to encrypt a file
+   async function encryptFile(file, password) {
+     // Read the file as a Blob
+     const fileContent = await file.arrayBuffer();
+
+     // Convert the ArrayBuffer to a WordArray (CryptoJS format)
+     const fileData = CryptoJS.lib.WordArray.create(new Uint8Array(fileContent));
+
+     // Encrypt the file data
+     const encryptedData = CryptoJS.AES.encrypt(fileData, password);
+
+     // Get the base64-encoded ciphertext
+     const encryptedBase64 = encryptedData.toString();
+
+     // Return the encrypted base64 string
+     return encryptedBase64;
+   }
+
+   // Create a function to decrypt a file
+   function decryptFile(encryptedBase64, password) {
+     // Decrypt the base64-encoded ciphertext
+     const decrypted = CryptoJS.AES.decrypt(encryptedBase64, password);
+
+     // Convert the WordArray to a Uint8Array
+     const decryptedBytes = new Uint8Array(decrypted.words.length * 4);
+     for (let i = 0; i < decrypted.words.length; i++) {
+       decryptedBytes[i * 4] = (decrypted.words[i] >> 24) & 0xff;
+       decryptedBytes[i * 4 + 1] = (decrypted.words[i] >> 16) & 0xff;
+       decryptedBytes[i * 4 + 2] = (decrypted.words[i] >> 8) & 0xff;
+       decryptedBytes[i * 4 + 3] = decrypted.words[i] & 0xff;
+     }
+
+     // Convert the Uint8Array to a Blob
+     const decryptedBlob = new Blob([decryptedBytes]);
+
+     // Return the decrypted Blob
+     return decryptedBlob;
+   }
+
+   // Add an event listener to the encrypt button
+   encryptButton.addEventListener('click', async () => {
+     // Get the file from the file input element
+     const file = fileInput.files[0];
+
+     // Get the password from the user
+     const password = prompt('Enter a password to encrypt the file with:');
+
+     if (password) {
+       // Encrypt the file
+       const encryptedBase64 = await encryptFile(file, password);
+
+       // Display the encrypted file in the encrypted file div
+       encryptedFileDiv.textContent = encryptedBase64;
+     }
+   });
+
+   // Add an event listener to the decrypt button
+   decryptButton.addEventListener('click', async () => {
+     // Get the encrypted file from the encrypted file div
+     const encryptedBase64 = encryptedFileDiv.textContent;
+
+     // Get the password from the user
+     const password = prompt('Enter the password to decrypt the file with:');
+
+     if (password) {
+       // Decrypt the file
+       const decryptedBlob = decryptFile(encryptedBase64, password);
+
+       // Create a download link for the decrypted file
+       const downloadLink = document.createElement('a');
+       downloadLink.href = URL.createObjectURL(decryptedBlob);
+       downloadLink.download = 'decrypted_file';
+       downloadLink.textContent = 'Download Decrypted File';
+
+       // Display the download link in the decrypted file div
+       decryptedFileDiv.innerHTML = '';
+       decryptedFileDiv.appendChild(downloadLink);
+     }
+   });
+   </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+*{
+  padding: 0px;
+  margin: 0px;
+  background-color: #F3FDE8;
+}
+.card{
+  border-radius: 8px;
+  height: 37rem;
+  width: 94%;
+  margin-top: 5rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  box-shadow: 0px 0px 20px 0px #DAD4B5;
+}
+.textIp{
+  padding-top: 5rem;
+  padding-left: 4rem;
+}
+.text{
+  font-size: 1.5rem;
+}
+#textBar{
+  width: 25rem;
+  height: 1.6rem;
+  font-size: 1rem;
+  border: #DAD4B5 1px solid;
+  padding-left: 0.5rem;
+  margin-left: 1rem;
+}
+#encrypt-button, #decrypt-button, #encryptButton, #decryptButton{
+  height: 2.5rem;
+  width: 6rem;
+  border: none;
+  background-color: #DAD4B5;
+  border-radius: 2px;
+}
+
+#encryptedText, #decryptedText{
+  width: 25rem;
+  margin-left: 0.6rem;
+  height: 5rem;
+  margin-top: 1rem
+}
+#encryptButton, #decryptButton{
+  margin-bottom: 2rem;
+}
+.fileIp{
+  margin-left: 60%;
+  margin-top: -24rem;
+}
+#encryptedFile{
+  width: 30rem;
+  height: 12rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
